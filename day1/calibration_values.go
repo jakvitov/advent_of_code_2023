@@ -23,7 +23,7 @@ func ReadFileAsLines(input string) []string {
 	return result
 }
 
-func isNum(char int32) bool {
+func IsNum(char int32) bool {
 	return char > 47 && char < 58
 }
 
@@ -36,7 +36,7 @@ func decodeRow(input string) int32 {
 	first := int32(-1)
 	last := int32(-1)
 	for _, char := range input {
-		if isNum(char) {
+		if IsNum(char) {
 			if first == -1 {
 				first = char - 48
 				last = first
