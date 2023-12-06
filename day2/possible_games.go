@@ -91,7 +91,7 @@ func (h *hand) colorNumberToInt(input string) {
 func parseHands(input string) []hand {
 	resultHands := make([]hand, 0)
 	input = strings.Replace(input, " ", "", -1)
-	parsedInputToHands := tokenizeString(input, SEMICOLON)
+	parsedInputToHands := TokenizeString(input, SEMICOLON)
 
 	for _, hnd := range parsedInputToHands {
 		//create a result hand
@@ -100,7 +100,7 @@ func parseHands(input string) []hand {
 			blueCount:  0,
 			redCount:   0,
 		}
-		colors := tokenizeString(hnd, COMMA)
+		colors := TokenizeString(hnd, COMMA)
 		for _, color := range colors {
 			//parse 10red to 10 and color red and add to current hand
 			resultHand.colorNumberToInt(color)
@@ -117,13 +117,13 @@ func parseGame(inputLine string) *game {
 	}
 
 	//Parse to game n and the hands
-	parsedDelim := tokenizeString(inputLine, DELIM)
+	parsedDelim := TokenizeString(inputLine, DELIM)
 	result.gameNum = convertGameStringToNum(parsedDelim[0])
 	result.hands = parseHands(parsedDelim[1])
 	return result
 }
 
-func tokenizeString(line string, token int32) []string {
+func TokenizeString(line string, token int32) []string {
 	result := make([]string, 0)
 	current := strings.Builder{}
 	for _, char := range line {
