@@ -8,12 +8,12 @@ import (
 
 const INPUT_FILE string = "day1/test_input.txt"
 
-func readFileAsLines() []string {
+func ReadFileAsLines(input string) []string {
 	result := make([]string, 0)
-	file, err := os.Open(INPUT_FILE)
+	file, err := os.Open(input)
 
 	if err != nil {
-		log.Fatal("Error while opening the file: " + INPUT_FILE + " " + err.Error())
+		log.Fatal("Error while opening the file: " + input + " " + err.Error())
 	}
 
 	scanner := bufio.NewScanner(file)
@@ -50,7 +50,7 @@ func decodeRow(input string) int32 {
 
 func DecodeFile() int64 {
 	result := int64(0)
-	lines := readFileAsLines()
+	lines := ReadFileAsLines(INPUT_FILE)
 	for _, line := range lines {
 		result += int64(decodeRow(line))
 	}

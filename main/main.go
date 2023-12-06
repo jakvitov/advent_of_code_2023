@@ -1,7 +1,7 @@
 package main
 
-import "advent_of_code_2023/day1"
+import "advent_of_code_2023/day2"
 
 func main() {
-	println(day1.DecodeFile())
+	println(day2.SumPossibleGames())
 }
