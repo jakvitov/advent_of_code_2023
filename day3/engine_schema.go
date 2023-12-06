@@ -41,7 +41,6 @@ func (s *schema) isSurroudingByteSpecialSymbol(x, y int) bool {
 
 	for _, char := range surroundingTiles {
 		if isSpecialSign(char) {
-			println(string(char))
 			return true
 		}
 	}
@@ -106,8 +105,6 @@ func GetSumOfNumbers() int {
 				currentNum = ""
 				hasSpecialNeightbour = false
 			} else {
-				if len(currentNum) > 0 {
-				}
 				currentNum = ""
 				hasSpecialNeightbour = false
 			}
