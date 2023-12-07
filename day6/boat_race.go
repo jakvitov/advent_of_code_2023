@@ -20,15 +20,23 @@ type sheet struct {
 func getMoreThanRecForEntry(time, record int) int {
 	result := 0
 	//We change time, so we need a constant here
-	stopFlag := time //int(math.Ceil(float64(time) / 2))
-	for charge := 0; charge < stopFlag; charge++ {
+	stopFlag := time / 2
+	for charge := 0; charge <= stopFlag; charge++ {
 		//We can beat the record with this combination
 		if time*charge > record {
 			result += 1
+			if result == 5 {
+				println("jldf")
+			}
 		}
 		time -= 1
 	}
 	//The problem is symmetric charge * time = time * charge, so we calculate only the first half
+	//If we have even number of nums, we count the half twice (causing result += 1 once more, so we remove it
+	result = result * 2
+	if (time % 2) == 0 {
+		result -= 1
+	}
 	return result
 }
 
