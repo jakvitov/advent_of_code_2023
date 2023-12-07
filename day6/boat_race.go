@@ -25,9 +25,6 @@ func getMoreThanRecForEntry(time, record int) int {
 		//We can beat the record with this combination
 		if time*charge > record {
 			result += 1
-			if result == 5 {
-				println("jldf")
-			}
 		}
 		time -= 1
 	}
