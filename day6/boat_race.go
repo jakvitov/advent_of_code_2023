@@ -3,36 +3,41 @@ package day6
 import (
 	"advent_of_code_2023/day1"
 	"advent_of_code_2023/day5"
+	"strings"
 )
 
-const INPUT_FILE string = "/home/jakub/go/advent_of_code_2023/day6/test_input.txt"
+const INPUT_FILE string = "day6/test_input.txt"
 const TIME_BEGINNING string = "Time:"
 const DISTANCE_BEGINNING string = "Distance:"
 
-//Structure representing sheet with the info about times and records
+// Structure representing sheet with the info about times and records
 type sheet struct {
 	times   []int
 	records []int
 }
 
-//todo - optimalise this, so we get rid of quadratic time
+// todo - optimalise this, so we get rid of quadratic time
 func getMoreThanRecForEntry(time, record int) int {
 	result := 0
-	for charge := 0; charge < time/2; charge++ {
+	//We change time, so we need a constant here
+	stopFlag := time //int(math.Ceil(float64(time) / 2))
+	for charge := 0; charge < stopFlag; charge++ {
 		//We can beat the record with this combination
-		if time*(time-charge) > record {
+		if time*charge > record {
 			result += 1
 		}
+		time -= 1
 	}
 	//The problem is symmetric charge * time = time * charge, so we calculate only the first half
-	return result * 2
+	return result
 }
 
-//Get how many of the times, we can get better than the record
+// Get how many of the times, we can get better than the record
 func (s *sheet) getMoreThanRecForSheet() int {
-	result := 0
+	result := 1
 	for i, time := range s.times {
-		result += getMoreThanRecForEntry(time, s.records[i])
+		println(getMoreThanRecForEntry(time, s.records[i]))
+		result *= getMoreThanRecForEntry(time, s.records[i])
 	}
 	return result
 }
@@ -42,6 +47,8 @@ func parseInput(inputFile string) *sheet {
 	if len(lines) < 2 {
 		panic("Invalid file read linenum < 2.")
 	}
+	lines[0] = strings.TrimLeft(lines[0], TIME_BEGINNING)
+	lines[1] = strings.TrimLeft(lines[1], DISTANCE_BEGINNING)
 
 	return &sheet{
 		times:   day5.TokenizeStringToInt(lines[0], ' '),

@@ -128,6 +128,9 @@ func TokenizeString(line string, token int32) []string {
 	current := strings.Builder{}
 	for _, char := range line {
 		if char == token {
+			if current.Len() == 0 {
+				continue
+			}
 			result = append(result, current.String())
 			current.Reset()
 			continue

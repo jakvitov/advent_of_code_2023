@@ -1,9 +1,9 @@
 package main
 
 import (
-	"advent_of_code_2023/day4"
+	"advent_of_code_2023/day6"
 )
 
 func main() {
-	println(day4.GetTotalCardsValue())
+	println(day6.GetAllCombinations())
 }
