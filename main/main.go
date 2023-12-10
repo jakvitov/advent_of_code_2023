@@ -1,7 +1,7 @@
 package main
 
-import "advent_of_code_2023/day8"
+import "advent_of_code_2023/day9"
 
 func main() {
-	println(day8.GetStepsCount())
+	println(day9.SumAllExtrapolatedValues())
 }
