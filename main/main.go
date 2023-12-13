@@ -1,7 +1,9 @@
 package main
 
-import "advent_of_code_2023/day9"
+import (
+	"advent_of_code_2023/day10"
+)
 
 func main() {
-	println(day9.SumAllExtrapolatedValues())
+	println(day10.GetFurthestNodeDistance())
 }
