@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-const INPUT_FILE string = "/home/jakub/go/advent_of_code_2023/day10/text_input.txt"
+const INPUT_FILE string = "/home/jakub/Development/advent_of_code/advent_of_code_2023/day10/text_input.txt"
 
 //Recursive search to find path back to S trough the cycle, with steps counting
 //Return the size of the current branch back to S
@@ -59,10 +59,13 @@ func (m *maze) getChar(crd coord) int32 {
 	return m.data[crd.y][crd.x]
 }
 
-func (m *maze) dfs(visited map[coord]coord) map[coord]coord {
+// We use the Depth first serach to scan the array
+func (m *maze) dfsSearch() map[coord]coord {
 
+	backtrackingMap := make(map[coord]coord)
+	visited := make(map[coord]bool)
+	startVisits := 0
 	stack := CreateStack[coord]()
-
 	start := m.start
 
 	bottom := coordOf(start.x, start.y+1)
@@ -74,104 +77,94 @@ func (m *maze) dfs(visited map[coord]coord) map[coord]coord {
 	stack.Push(&top)
 	stack.Push(&right)
 	stack.Push(&left)
+	visited[start] = true
 
-	visited[bottom] = start
-	visited[top] = start
-	visited[right] = start
-	visited[left] = start
+	prev := start
 
 	for {
 		current := *stack.Pop()
 
-		if m.getChar(current) == 'S' {
-			return visited
-		} else if m.getChar(current) == -1 {
+		char := m.getChar(current)
+
+		if char == 'S' && startVisits == 0 {
+			startVisits += 1
+			continue
+		} else if char == 'S' && startVisits == 1 {
+			return backtrackingMap
+		} else if char == -1 || char == '.' {
 			continue
 		}
 
-		_, found := visited[current]
-		if found {
+		//Mark current coord as visited
+		if visited[current] {
 			continue
+		} else {
+			visited[current] = true
 		}
 
-		switch m.getChar(current) {
+		backtrackingMap[current] = prev
+		prev = current
+
+		switch char {
 		//We construct the up coord and down coord because of |, accordingly to the others
 		case '|':
 			top := coordOf(current.x, current.y-1)
 			bottom := coordOf(current.x, current.y+1)
-			visited[top] = current
-			visited[bottom] = current
 			stack.Push(&top)
 			stack.Push(&bottom)
 
 		case '-':
 			right := coordOf(current.x+1, current.y)
 			left := coordOf(current.x-1, current.y)
-			visited[right] = current
-			visited[left] = current
 			stack.Push(&right)
 			stack.Push(&left)
 
 		case 'L':
 			top := coordOf(current.x, current.y-1)
 			right := coordOf(current.x+1, current.y)
-			visited[top] = current
-			visited[right] = current
+			stack.Push(&top)
 			stack.Push(&right)
-			stack.Push(&left)
 
 		case 'J':
 			top := coordOf(current.x, current.y-1)
 			left := coordOf(current.x-1, current.y)
-			visited[top] = current
-			visited[left] = current
 			stack.Push(&top)
 			stack.Push(&left)
 
 		case '7':
 			bottom := coordOf(current.x, current.y+1)
 			left := coordOf(current.x-1, current.y)
-			visited[bottom] = current
-			visited[left] = current
 			stack.Push(&bottom)
 			stack.Push(&left)
 
 		case 'F':
 			bottom := coordOf(current.x, current.y+1)
 			right := coordOf(current.x+1, current.y)
-			visited[bottom] = current
-			visited[right] = current
 			stack.Push(&bottom)
-			stack.Push(&left)
+			stack.Push(&right)
 
 		//Probably . or other not important letter -> we continue to next iteration and pop
 		default:
 			continue
 		}
+
 	}
+
 }
 
 // Print the backtracking reconstruction of the cycle
 func (m *maze) reconstructCycle(backtrackingMap map[coord]coord) {
-	current := backtrackingMap[m.start]
 
-	for {
-		prev := current
-		next, found := backtrackingMap[current]
-		if !found {
-			break
-		}
-
-		fmt.Printf("[%d:%d]{%s} -> [%d:%d]{%s}\t", prev.x, prev.y, string(m.getChar(prev)), next.x, next.y, string(m.getChar(next)))
+	for key, val := range backtrackingMap {
+		fmt.Printf("[%c] -> [%c]\n", m.getChar(val), m.getChar(key))
 	}
 }
 
 func GetFurthestNodeDistance() int {
 	//How we got to each point [dest] -> origin
-	backtrackingMap := make(map[coord]coord)
 	mz := parseMaze(INPUT_FILE)
 
-	backtrackingMap = mz.dfs(backtrackingMap)
+	backtrackingMap := mz.dfsSearch()
 
 	mz.reconstructCycle(backtrackingMap)
 	return 0
