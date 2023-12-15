@@ -2,10 +2,9 @@ package day10
 
 import (
 	"advent_of_code_2023/day1"
-	"fmt"
 )
 
-const INPUT_FILE string = "/home/jakub/Development/advent_of_code/advent_of_code_2023/day10/text_input.txt"
+const INPUT_FILE string = "/home/jakub/Development/advent_of_code/advent_of_code_2023/day10/text_input5.txt"
 
 //Recursive search to find path back to S trough the cycle, with steps counting
 //Return the size of the current branch back to S
@@ -73,10 +72,19 @@ func (m *maze) dfsSearch() map[coord]coord {
 	right := coordOf(start.x+1, start.y)
 	left := coordOf(start.x-1, start.y)
 
-	stack.Push(&bottom)
-	stack.Push(&top)
-	stack.Push(&right)
-	stack.Push(&left)
+	if m.getChar(bottom) == '|' || m.getChar(bottom) == 'L' || m.getChar(bottom) == 'J' {
+		stack.Push(&bottom)
+	}
+	if m.getChar(right) == '-' || m.getChar(right) == '7' || m.getChar(right) == 'J' {
+		stack.Push(&right)
+	}
+	if m.getChar(left) == 'F' || m.getChar(left) == '-' || m.getChar(left) == 'L' {
+		stack.Push(&left)
+	}
+	if m.getChar(top) == '|' || m.getChar(top) == '7' || m.getChar(top) == 'F' {
+		stack.Push(&top)
+	}
+
 	visited[start] = true
 
 	prev := start
@@ -90,6 +98,7 @@ func (m *maze) dfsSearch() map[coord]coord {
 			startVisits += 1
 			continue
 		} else if char == 'S' && startVisits == 1 {
+			backtrackingMap[current] = prev
 			return backtrackingMap
 		} else if char == -1 || char == '.' {
 			continue
@@ -102,6 +111,7 @@ func (m *maze) dfsSearch() map[coord]coord {
 			visited[current] = true
 		}
 
+		//How we got to this point
 		backtrackingMap[current] = prev
 		prev = current
 
@@ -153,11 +163,23 @@ func (m *maze) dfsSearch() map[coord]coord {
 }
 
 // Print the backtracking reconstruction of the cycle
-func (m *maze) reconstructCycle(backtrackingMap map[coord]coord) {
+func (m *maze) reconstructCycle(backtrackingMap map[coord]coord) int {
 
-	for key, val := range backtrackingMap {
-		fmt.Printf("[%c] -> [%c]\n", m.getChar(val), m.getChar(key))
+	len := 0
+	end := backtrackingMap[m.start]
+	for {
+		println(string(m.getChar(end)))
+		len += 1
+		if m.getChar(end) == 'S' {
+			break
+		}
+		end = backtrackingMap[end]
 	}
+	//For backtracking print
+	/**for key, val := range backtrackingMap {
+		fmt.Printf("[%c] -> [%c]\n", m.getChar(val), m.getChar(key))
+	}*/
+	return len / 2
 }
 
 func GetFurthestNodeDistance() int {
@@ -166,6 +188,5 @@ func GetFurthestNodeDistance() int {
 
 	backtrackingMap := mz.dfsSearch()
 
-	mz.reconstructCycle(backtrackingMap)
-	return 0
+	return mz.reconstructCycle(backtrackingMap)
 }
