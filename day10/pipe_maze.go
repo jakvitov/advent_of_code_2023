@@ -13,22 +13,18 @@ const INPUT_FILE string = "/home/jakub/Development/advent_of_code/advent_of_code
 
 type maze struct {
 	data  [][]int32
-	start coord
+	start Coord
 }
 
-type coord struct {
-	x, y int
+type Coord struct {
+	X, Y int
 }
 
-func coordOf(x, y int) coord {
-	return coord{
-		x: x,
-		y: y,
+func CoordOf(x, y int) Coord {
+	return Coord{
+		X: x,
+		Y: y,
 	}
-}
-
-func coordEquals(c, c2 coord) bool {
-	return c.x == c2.x && c.y == c2.y
 }
 
 func parseMaze(inputFile string) *maze {
@@ -42,7 +38,7 @@ func parseMaze(inputFile string) *maze {
 		for x, char := range line {
 			//We keep the information about the start
 			if char == 'S' {
-				result.start = coordOf(x, y)
+				result.start = CoordOf(x, y)
 			}
 			result.data[y][x] = char
 		}
@@ -50,27 +46,27 @@ func parseMaze(inputFile string) *maze {
 	return result
 }
 
-func (m *maze) getChar(crd coord) int32 {
+func (m *maze) getChar(crd Coord) int32 {
 	//We are outside of the maze
-	if crd.y > len(m.data) || crd.y < 0 || crd.x > len(m.data[crd.y]) || crd.x < 0 {
+	if crd.Y > len(m.data) || crd.Y < 0 || crd.X > len(m.data[crd.Y]) || crd.X < 0 {
 		return -1
 	}
-	return m.data[crd.y][crd.x]
+	return m.data[crd.Y][crd.X]
 }
 
 // We use the Depth first serach to scan the array
-func (m *maze) dfsSearch() map[coord]coord {
+func (m *maze) dfsSearch() map[Coord]Coord {
 
-	backtrackingMap := make(map[coord]coord)
-	visited := make(map[coord]bool)
+	backtrackingMap := make(map[Coord]Coord)
+	visited := make(map[Coord]bool)
 	startVisits := 0
-	stack := CreateStack[coord]()
+	stack := CreateStack[Coord]()
 	start := m.start
 
-	bottom := coordOf(start.x, start.y+1)
-	top := coordOf(start.x, start.y-1)
-	right := coordOf(start.x+1, start.y)
-	left := coordOf(start.x-1, start.y)
+	bottom := CoordOf(start.X, start.Y+1)
+	top := CoordOf(start.X, start.Y-1)
+	right := CoordOf(start.X+1, start.Y)
+	left := CoordOf(start.X-1, start.Y)
 
 	if m.getChar(bottom) == '|' || m.getChar(bottom) == 'L' || m.getChar(bottom) == 'J' {
 		stack.Push(&bottom)
@@ -104,7 +100,7 @@ func (m *maze) dfsSearch() map[coord]coord {
 			continue
 		}
 
-		//Mark current coord as visited
+		//Mark current Coord as visited
 		if visited[current] {
 			continue
 		} else {
@@ -116,40 +112,40 @@ func (m *maze) dfsSearch() map[coord]coord {
 		prev = current
 
 		switch char {
-		//We construct the up coord and down coord because of |, accordingly to the others
+		//We construct the up Coord and down Coord because of |, accordingly to the others
 		case '|':
-			top := coordOf(current.x, current.y-1)
-			bottom := coordOf(current.x, current.y+1)
+			top := CoordOf(current.X, current.Y-1)
+			bottom := CoordOf(current.X, current.Y+1)
 			stack.Push(&top)
 			stack.Push(&bottom)
 
 		case '-':
-			right := coordOf(current.x+1, current.y)
-			left := coordOf(current.x-1, current.y)
+			right := CoordOf(current.X+1, current.Y)
+			left := CoordOf(current.X-1, current.Y)
 			stack.Push(&right)
 			stack.Push(&left)
 
 		case 'L':
-			top := coordOf(current.x, current.y-1)
-			right := coordOf(current.x+1, current.y)
+			top := CoordOf(current.X, current.Y-1)
+			right := CoordOf(current.X+1, current.Y)
 			stack.Push(&top)
 			stack.Push(&right)
 
 		case 'J':
-			top := coordOf(current.x, current.y-1)
-			left := coordOf(current.x-1, current.y)
+			top := CoordOf(current.X, current.Y-1)
+			left := CoordOf(current.X-1, current.Y)
 			stack.Push(&top)
 			stack.Push(&left)
 
 		case '7':
-			bottom := coordOf(current.x, current.y+1)
-			left := coordOf(current.x-1, current.y)
+			bottom := CoordOf(current.X, current.Y+1)
+			left := CoordOf(current.X-1, current.Y)
 			stack.Push(&bottom)
 			stack.Push(&left)
 
 		case 'F':
-			bottom := coordOf(current.x, current.y+1)
-			right := coordOf(current.x+1, current.y)
+			bottom := CoordOf(current.X, current.Y+1)
+			right := CoordOf(current.X+1, current.Y)
 			stack.Push(&bottom)
 			stack.Push(&right)
 
@@ -163,7 +159,7 @@ func (m *maze) dfsSearch() map[coord]coord {
 }
 
 // Print the backtracking reconstruction of the cycle
-func (m *maze) reconstructCycle(backtrackingMap map[coord]coord) int {
+func (m *maze) reconstructCycle(backtrackingMap map[Coord]Coord) int {
 
 	len := 0
 	end := backtrackingMap[m.start]
