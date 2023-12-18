@@ -137,7 +137,9 @@ func TokenizeString(line string, token int32) []string {
 		}
 		current.WriteByte(byte(char))
 	}
-	result = append(result, current.String())
+	if current.String() != "" {
+		result = append(result, current.String())
+	}
 	return result
 }
 

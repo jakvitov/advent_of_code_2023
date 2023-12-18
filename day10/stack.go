@@ -1,47 +1,47 @@
 package day10
 
-//Implementation of stack for DFS algorithmn
-//We use a singly linked list to get constant insertion and remove-top operations
+// Implementation of stack for DFS algorithmn
+// We use a singly linked list to get constant insertion and remove-top operations
 type Stack[K any] struct {
 	top *Node[K]
 	len int
 }
 
 type Node[K any] struct {
-	val  *K
-	next *Node[K]
+	Val  *K
+	Next *Node[K]
 }
 
-//Create an empty node to be pushed to stack
-func createNode[K any](val *K) *Node[K] {
+// Create an empty node to be pushed to stack
+func CreateNode[K any](Val *K) *Node[K] {
 	return &Node[K]{
-		val: val,
+		Val: Val,
 	}
 }
 
-//Create empty stack
+// Create empty stack
 func CreateStack[K any]() *Stack[K] {
 	return &Stack[K]{
 		len: 0,
 	}
 }
 
-//Push item to stack
-func (s *Stack[K]) Push(val *K) {
+// Push item to stack
+func (s *Stack[K]) Push(Val *K) {
 	//We init the stack
 	if s.len == 0 {
-		s.top = createNode[K](val)
+		s.top = CreateNode[K](Val)
 		s.len = 1
 		return
 	}
 	//We push value to already non empty stack
-	n := createNode[K](val)
-	n.next = s.top
+	n := CreateNode[K](Val)
+	n.Next = s.top
 	s.top = n
 	s.len += 1
 }
 
-//Remove the top item from the stack
+// Remove the top item from the stack
 func (s *Stack[K]) Pop() *K {
 	//Stack is empty -> we return nil
 	if s.len == 0 {
@@ -52,12 +52,12 @@ func (s *Stack[K]) Pop() *K {
 		result := s.top
 		s.top = nil
 		s.len = 0
-		return result.val
+		return result.Val
 	}
 	//Top node of the stack to be returned
 	result := s.top
 	//
-	s.top = s.top.next
+	s.top = s.top.Next
 	s.len -= 1
-	return result.val
+	return result.Val
 }
