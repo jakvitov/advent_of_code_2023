@@ -1,9 +1,9 @@
 package main
 
 import (
-	"advent_of_code_2023/day14"
+	"advent_of_code_2023/day15"
 )
 
 func main() {
-	println(day14.GetLoadAfterTilt())
+	println(day15.GetHashSum())
 }
