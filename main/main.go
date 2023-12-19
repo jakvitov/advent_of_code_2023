@@ -1,9 +1,9 @@
 package main
 
 import (
-	"advent_of_code_2023/day12"
+	"advent_of_code_2023/day13"
 )
 
 func main() {
-	println(day12.GetDifferentArrangementsNum())
+	println(day13.SummariseLinesOfReflections())
 }
