@@ -5,5 +5,5 @@ import (
 )
 
 func main() {
-	println(day15.GetHashSum())
+	println(day15.GetFocusingPower())
 }
