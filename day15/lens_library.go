@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-const INPUT_TEXT string = "/home/jakub/Development/advent_of_code/advent_of_code_2023/day15/text_input2.txt"
+const INPUT_TEXT string = "/home/jakub/go/advent_of_code_2023/day15/text_input2.txt"
 
 func ReadFileAsString(input string) string {
 	data, err := os.ReadFile(input)
