@@ -1,12 +1,14 @@
 package day15
 
 import (
+	"fmt"
+	"strings"
 	"testing"
 )
 
 const TEST_SIZE int = 100000
 
-func TestLinkedLIst(t *testing.T) {
+func TestLinkedList(t *testing.T) {
 	l := CreateLinkedList()
 
 	for i := 0; i < TEST_SIZE; i++ {
@@ -50,5 +52,126 @@ func TestLinkedLIst(t *testing.T) {
 	if l.len != 0 {
 		l.printReverse()
 		t.Errorf("List not empty. List len: %d\n", l.len)
+	}
+}
+
+func TestLinkedList2(t *testing.T) {
+	l := CreateLinkedList()
+	for i := 0; i < 13; i++ {
+		lensName := strings.Repeat(string(byte('a')), i%12+1)
+		testLens := lens{
+			name:        lensName,
+			focalLength: i + 1,
+		}
+		l.Add(testLens)
+	}
+	//l.printReverse()
+
+	for i := 0; i < 13; i++ {
+		lensName := strings.Repeat(string(byte('a')), i%12+1)
+		testLens := lens{
+			name:        lensName,
+			focalLength: 1,
+		}
+		l.Add(testLens)
+	}
+
+	for i := 0; i < 13; i++ {
+		lensName := strings.Repeat(string(byte('a')), i%12+1)
+		testLens := lens{
+			name: lensName,
+		}
+		l.Remove(testLens)
+	}
+
+	for i := 0; i < 13; i++ {
+		lensName := strings.Repeat(string(byte('a')), i%12+1)
+		testLens := lens{
+			name: lensName,
+		}
+		l.Remove(testLens)
+	}
+
+	for i := 0; i < 13; i++ {
+		lensName := strings.Repeat(string(byte('a')), i%12+1)
+		testLens := lens{
+			name:        lensName,
+			focalLength: i + 1,
+		}
+		l.Add(testLens)
+	}
+	l.printReverse()
+
+}
+
+func TestLinkedList3(t *testing.T) {
+	l := CreateLinkedList()
+	for i := 0; i < 4; i++ {
+		lensName := strings.Repeat("p", i+1)
+		testLens := lens{
+			name:        lensName,
+			focalLength: i,
+		}
+		l.Add(testLens)
+	}
+	fmt.Printf("\n------------------------\n")
+	l.printReverse()
+	fmt.Printf("\n------------------------\n")
+	toRemove := lens{
+		name: "pppp",
+	}
+	l.Remove(toRemove)
+	l.printReverse()
+	fmt.Printf("\n------------------------\n")
+	if l.Get(0).name == "pppp" {
+		t.Error("Remove failed!")
+	}
+}
+
+func TestLinkedList4(t *testing.T) {
+	l := CreateLinkedList()
+	for i := 0; i < 4; i++ {
+		lensName := strings.Repeat("p", i+1)
+		testLens := lens{
+			name:        lensName,
+			focalLength: i,
+		}
+		l.Add(testLens)
+	}
+	fmt.Printf("\n------------------------\n")
+	l.printReverse()
+	fmt.Printf("\n------------------------\n")
+	toRemove := lens{
+		name: "p",
+	}
+	l.Remove(toRemove)
+	l.printReverse()
+	fmt.Printf("\n------------------------\n")
+	if l.reverseAsArray()[0].name == "p" {
+		t.Error("Remove failed!")
+	}
+}
+
+func TestLinkedList5(t *testing.T) {
+	l := CreateLinkedList()
+	for i := 0; i < 4; i++ {
+		lensName := strings.Repeat("p", i+1)
+		testLens := lens{
+			name:        lensName,
+			focalLength: i,
+		}
+		l.Add(testLens)
+	}
+	fmt.Printf("\n------------------------\n")
+	l.printReverse()
+	fmt.Printf("\n------------------------\n")
+	toRemove := lens{
+		name: "ppp",
+	}
+	l.Remove(toRemove)
+	l.printReverse()
+	fmt.Printf("\n------------------------\n")
+	if l.reverseAsArray()[2].name == "p" {
+		t.Error("Remove failed!")
 	}
 }

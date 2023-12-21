@@ -17,10 +17,9 @@ type lens struct {
 }
 
 func parseLens(input string) lens {
-	lines := day2.TokenizeString(input, '=')
-	val, _ := strconv.Atoi(lines[1])
+	val, _ := strconv.Atoi(string(input[len(input)-1]))
 	return lens{
-		name:        lines[0],
+		name:        input[:len(input)-2],
 		focalLength: val,
 	}
 }
@@ -61,16 +60,21 @@ func (l *lensHashMap) fillLensHashMap(lines []string) {
 
 func calculatePower(hashMap *lensHashMap) int {
 	sum := 0
+	println("-------------------")
 
 	for i, boxes := range hashMap.data {
 		boxesOrder := boxes.reverseAsArray()
-		for k, singleLens := range boxesOrder {
-			focusPower := i + 1
-			focusPower *= k + 1
-			focusPower *= singleLens.focalLength
-			sum += focusPower
+		if boxes.len >= 1 {
+			fmt.Printf("[Box: %d]\n", i+1)
+
+			for k, singleLens := range boxesOrder {
+				fmt.Printf("\t - Lens %d [%s:%d] += [%d]\n", k+1, singleLens.name, singleLens.focalLength, (i+1)*(k+1)*(singleLens.focalLength))
+				sum += (i + 1) * (k + 1) * (singleLens.focalLength)
+			}
+			fmt.Println("")
 		}
 	}
+	println("-------------------")
 
 	return sum
 }
@@ -83,7 +87,7 @@ func GetFocusingPower() int {
 	//Debug print of all the boxes in order
 	for i, list := range lhm.data {
 		if list.len != 0 {
-			fmt.Printf("%d. ", i)
+			fmt.Printf("%d. ", i+1)
 			list.printReverse()
 			println("")
 		}

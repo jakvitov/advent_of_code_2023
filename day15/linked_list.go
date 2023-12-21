@@ -15,7 +15,6 @@ func CreateNode(val lens) *Node {
 
 type LinkedList struct {
 	start *Node
-	end   *Node
 	len   int
 }
 
@@ -28,12 +27,11 @@ func CreateLinkedList() *LinkedList {
 func (l *LinkedList) Add(item lens) {
 	if l.len == 0 {
 		l.start = CreateNode(item)
-		l.end = l.start
 		l.len = 1
 		return
 	}
 
-	for current := l.start; current != l.end; current = current.next {
+	for current := l.start; current != nil; current = current.next {
 		if current.val.name == item.name {
 			current.val.focalLength = item.focalLength
 			return
@@ -47,7 +45,7 @@ func (l *LinkedList) Add(item lens) {
 }
 
 func (l *LinkedList) Get(i int) *lens {
-	for ptr := l.start; ptr != l.end; ptr = ptr.next {
+	for ptr := l.start; ptr != nil; ptr = ptr.next {
 		if i == 0 {
 			return &ptr.val
 		}
@@ -64,19 +62,19 @@ func (l *LinkedList) Remove(input lens) bool {
 	current := prev.next
 	if current == nil && prev.val.Equals(input) {
 		l.start = nil
-		l.end = l.start
 		l.len = 0
 		return true
 	} else if current == nil {
 		return false
+	} else if prev.val.Equals(input) {
+		l.start = l.start.next
+		l.len -= 1
+		return true
 	}
 
 	for current != nil {
-		prev = current
-		current = prev.next
 		if current == nil && prev.val.Equals(input) {
 			l.start = nil
-			l.end = l.start
 			l.len = 0
 			return true
 		} else if current == nil {
@@ -84,13 +82,12 @@ func (l *LinkedList) Remove(input lens) bool {
 		}
 
 		if current.val.Equals(input) {
-			if current.next == nil {
-				l.end = prev
-			}
 			prev.next = current.next
 			l.len -= 1
 			return true
 		}
+		prev = current
+		current = prev.next
 	}
 	return false
 }
@@ -106,9 +103,10 @@ func (l *LinkedList) reverseAsArray() []lens {
 }
 
 func (l *LinkedList) printReverse() {
+	fmt.Printf("[S]->")
 	res := l.reverseAsArray()
 	for _, oneLens := range res {
 		fmt.Printf("[%s;%d]-->", oneLens.name, oneLens.focalLength)
 	}
-	fmt.Printf("[END]")
+	fmt.Printf("[E]")
 }
