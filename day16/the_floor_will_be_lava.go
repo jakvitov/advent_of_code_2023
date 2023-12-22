@@ -101,7 +101,7 @@ func (m Matrix) getUniqueEnergizedTilesCount(energizedTiles day12.Set[coordDirPa
 		uniqueCoord.Add(key.crd)
 	}
 
-	for y, line := range m {
+	/*for y, line := range m {
 		fmt.Printf("| ")
 		for x, char := range line {
 			if uniqueCoord.IsPresent(day10.CoordOf(x, y)) {
@@ -111,7 +111,7 @@ func (m Matrix) getUniqueEnergizedTilesCount(energizedTiles day12.Set[coordDirPa
 			fmt.Printf(" %s ", string(char))
 		}
 		fmt.Printf(" |\n")
-	}
+	}*/
 
 	return uniqueCoord.GetLen()
 }
@@ -121,8 +121,8 @@ func GetEnergizedTilesCount() int {
 	lines := day1.ReadFileAsLines(INPUT_TEXT)
 	m := ParseMatrix(lines)
 	m.moveTile(day10.CoordOf(-1, 0), day10.CoordOf(1, 0), *energizedTiles)
-	println("---------------------------------------------------")
+	/*println("---------------------------------------------------")
 	m.PrintMatrix()
-	println("---------------------------------------------------")
+	println("---------------------------------------------------")*/
 	return m.getUniqueEnergizedTilesCount(*energizedTiles)
 }

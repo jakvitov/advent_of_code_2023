@@ -6,5 +6,5 @@ import (
 )
 
 func main() {
-	fmt.Printf("Result : [%d]\n", day16.GetEnergizedTilesCount())
+	fmt.Printf("Result : [%d]\n", day16.GetBestConfigurationEnergizedCount())
 }
