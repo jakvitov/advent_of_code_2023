@@ -18,6 +18,14 @@ func (s *Set[K]) Remove(item K) {
 	delete(s.data, item)
 }
 
-func (s *Set[K]) isPresent(item K) bool {
+func (s *Set[K]) IsPresent(item K) bool {
 	return s.data[item]
+}
+
+func (s *Set[K]) GetLen() int {
+	return len(s.data)
+}
+
+func (s *Set[K]) GetData() map[K]bool {
+	return s.data
 }
