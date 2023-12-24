@@ -1,10 +1,10 @@
 package main
 
 import (
-	"advent_of_code_2023/day16"
+	"advent_of_code_2023/day17"
 	"fmt"
 )
 
 func main() {
-	fmt.Printf("Result : [%d]\n", day16.GetBestConfigurationEnergizedCount())
+	fmt.Printf("Result : [%d]\n", day17.GetOptimalPathHeatLoss())
 }

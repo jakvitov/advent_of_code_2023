@@ -20,6 +20,14 @@ type Coord struct {
 	X, Y int
 }
 
+func (c *Coord) PlusCoord(a Coord) Coord {
+	return CoordOf(c.X+a.X, c.Y+a.Y)
+}
+
+func (c *Coord) PlusCoordNum(x, y int) Coord {
+	return CoordOf(c.X+x, c.Y+y)
+}
+
 func CoordOf(x, y int) Coord {
 	return Coord{
 		X: x,
