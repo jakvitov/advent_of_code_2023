@@ -275,3 +275,21 @@ func (self *Heap[T]) IndexOf(node T) int {
 	}
 	return -1
 }
+
+func (self *Heap[T]) CustomEqIndexOf(node T, Equals func(T, T) bool) int {
+	if !self.IsEmpty() {
+		for index, n := range self.nodes {
+			if Equals(n, node) {
+				return index
+			}
+		}
+	}
+	return -1
+}
+
+// Update priority of the given node, use custom equals for comparison
+func (self *Heap[T]) UpdatePriority(node T, Equals func(T, T) bool) {
+	index := self.CustomEqIndexOf(node, Equals)
+	self.PopAt(index)
+	self.Insert(node)
+}

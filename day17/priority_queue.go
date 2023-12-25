@@ -66,3 +66,7 @@ func (self *PriorityQueue[T]) IndexOf(element T) int {
 func (self *PriorityQueue[T]) GetItem(element T, Equals func(T, T) bool) (*T, bool) {
 	return self.heap.GetNode(element, Equals)
 }
+
+func (self *PriorityQueue[T]) UpdatePriority(element T, Equals func(T, T) bool) {
+	self.heap.UpdatePriority(element, Equals)
+}
